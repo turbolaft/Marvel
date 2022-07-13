@@ -1,0 +1,75 @@
+@import '../../styles/variables.scss';
+
+.about {
+    margin-left: 25px;
+    padding: 25px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+
+    &__descr {
+        font-family: 'Roboto Condensed';
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        margin-bottom: 10px;
+        color: #000000;
+    }
+}
+
+.main-info {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+
+    &__logo {
+        width: 150px;
+        height: 150px;
+        margin-right: 25px;
+    }
+
+    &__name {
+        font-family: 'Roboto Condensed';
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 26px;
+        margin-bottom: 35px;
+        color: #000000;
+    }
+
+    &__button {
+        display: block;
+
+        &:last-child {
+            margin-top: 10px;
+            background-color: $gray-color;
+        }
+    }
+}
+
+.comics {
+
+    &__title {
+        font-family: 'Roboto Condensed';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 21px;
+        margin-bottom: 10px;
+        color: #000000;
+    }
+
+    &__item {
+        font-family: 'Roboto Condensed';
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        padding: 4px 0 3px 10px;
+        color: #000000;
+        background: #FFFFFF;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+    }
+}

@@ -1,0 +1,41 @@
+.char__cards {
+    display: grid;
+    max-width: 650px;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+    grid-template-rows: repeat(auto-fit, minmax(318px, 1fr));
+}
+
+.char__card {
+    width: 200px;
+    min-height: 318px;
+    background-color: #232222;
+    transition: all .3s ease 0s;
+    cursor: pointer;
+
+    &-img {
+        max-width: 200px;
+        max-height: 200px;
+    }
+
+    &:hover {
+        transform: translateY(-20px);
+        box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
+    }
+}
+
+.char__card-title {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 26px;
+
+    color: #FFFFFF;
+    margin: 15px 0 0 15px;
+}
+
+.db {
+    display: block !important;
+}

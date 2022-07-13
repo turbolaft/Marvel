@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Myriad Pro Regular'), url('./fonts/RobotoCondensed-Bold.ttf') format('woff');
+}
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Myriad Pro Regular'), url('./fonts/RobotoCondensed-Regular.ttf') format('woff');
+}
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Myriad Pro Regular'), url('./fonts/RobotoCondensed-Light.ttf') format('woff');
+}

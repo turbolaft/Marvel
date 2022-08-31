@@ -1,6 +1,7 @@
 @import '../../styles/variables.scss';
 
 
+
 body {
     font-family: 'Roboto Condensed', sans-serif;
     font-weight: 400;
@@ -48,10 +49,23 @@ body {
     right: 0;
     width: 467px;
     height: 372px;
+
+    @media (max-width: ($md1+'px')) {
+        display: none;
+    }
+}
+
+.footer__wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .footer__button {
     margin-top: 45px;
     width: 170px;
-    margin-left: 240px;
+}
+
+.contain {
+    object-fit: contain !important;
 }

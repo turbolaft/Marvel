@@ -1,50 +1,116 @@
+import React,{ Component } from 'react';
+import MarvelServices from '../../services/MarvelServices';
 
-import logo from '../../img/loki.jpg';
+import Skeleton from '../skeleton/SmallSkeleton';
+import { Waiting } from '../randomCharacter/RandomCharacter';
+import { Error } from '../randomCharacter/RandomCharacter';
 import './charAbout.scss';
 
-function CharAbout() {
-    const comicsData = [
-        'AMAZING SPIDER-MAN VOL. 7: BOOK OF EZEKIEL TPB (Trade Paperback)',
-    ];
-
-    for (let i = 0; i < 9; i++) {
-        comicsData.push(comicsData[0]);
+class CharAbout extends Component {
+    state = {
+        char: null,
+        loading: false,
+        error: false,
     }
 
-    const comicses = comicsData.map(item => {
+    marvelService = new MarvelServices();
+
+    onCharLoaded = char => {
+        this.setState({char, loading: false});
+    }
+
+    onCharError = () => {
+        this.setState({error: true, loading: false});
+    }
+
+    onCharLoading = () => {
+        this.setState({
+            char: null,
+            loading: true,
+            error: false
+        });
+    }
+
+    updateChar = () => {
+        const {charId} = this.props;
+        if (!charId) {
+            return;
+        }
+
+        this.onCharLoading();
+
+        this.marvelService
+            .getCertainCharacter(this.props.charId)
+            .then(this.onCharLoaded)
+            .catch(this.onCharError);
+    }
+
+    componentDidMount() {
+        this.updateChar();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.charId !== prevProps.charId) {
+            this.updateChar();
+        }
+    }
+
+    render() {
+        const {char, loading, error} = this.state,
+            loadingMessage = loading ? <Waiting/> : null,
+            skeleton = !char && !loading && !error ? <Skeleton/> : null,
+            errorMessage = error ? <Error/> : null,
+            getResult = !loading && !error && char ? <View char={char}/> : null;
+
         return (
-            <li className="comics__item">
-                {item}
-            </li>
+            <div className="char__about about">
+                {skeleton}
+                {loadingMessage}
+                {errorMessage}
+                {getResult}
+            </div>
         )
-    });
-    
+    }
+}
+
+const View = ({char}) => {
+    let imgClass = 'img';
+
+    if (char.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+        imgClass += " contain";
+    }
+
     return (
-        <div className="char__about about">
+        <>
             <div className="about__main-info main-info">
                 <div className="main-info__logo">
-                    <img src={logo} alt="Logo" className="img" />
+                    <img src={char.thumbnail} alt={char.name} className={imgClass} />
                 </div>
                 <div className="main-info__descr">
-                    <div className="main-info__name">LOKI</div>
+                    <div className="main-info__name">{char.name}</div>
                     <button className="main-info button">HOMEPAGE</button>
                     <button className="main-info__button button">WIKI</button>
                 </div>
             </div>
-
+    
             <p className="about__descr">
-                In Norse mythology, Loki is a god or jötunn (or both). Loki is the son of Fárbauti and Laufey, and the brother of Helblindi and Býleistr. By the jötunn Angrboða, Loki is the father of Hel, the wolf Fenrir, and the world serpent Jörmungandr. By Sigyn, Loki is the father of Nari and/or Narfi and with the stallion Svaðilfari as the father, Loki gave birth—in the form of a mare—to the eight-legged horse Sleipnir. In addition, Loki is referred to as the father of Váli in the Prose Edda.
+                {char.description || "We haven't got a description here!"}
             </p>
-
+    
             <div className="about__comics comics">
                 <div className="comics__title">Comics:</div>
 
                 <ul className="comics__list">
-                    {comicses}
+                    {char.comics.map((item, index) => {
+                        return (
+                            <li className="comics__item" key={index}>
+                                {typeof item === 'string' ? item : item.name}
+                            </li>
+                        )
+                    })}
                 </ul>
             </div>
-        </div>
+        </>
     )
 }
-
-export default CharAbout;
+export { CharAbout };

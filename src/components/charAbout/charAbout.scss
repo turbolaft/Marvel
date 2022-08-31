@@ -1,6 +1,12 @@
 @import '../../styles/variables.scss';
 
 .about {
+    position: sticky;
+    top: 10px;
+    z-index: 5;
+    max-width: 425px;
+    min-width: 425px;
+    min-height: 200px !important;
     margin-left: 25px;
     padding: 25px;
     background: #FFFFFF;
@@ -14,17 +20,52 @@
         margin-bottom: 10px;
         color: #000000;
     }
+
+    @media (max-width: ($md1+'px')) {
+        position: static;
+        margin-bottom: 30px;
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: 375px 1fr;
+        grid-template-areas: 'info sidebar' 'descr sidebar';
+        grid-template-rows: 170px 1fr;
+    }
+
+    @media (max-width: ($md3+'px')) {
+        display: block;
+    }
+
+    @media (max-width: ($md4+'px')) {
+        min-width: 100%;
+        max-width: 100%;
+    }
+}
+
+.about__descr {
+    order: 1;
+    grid-area: descr;
+    margin-top: 10px;
+
+    @media (max-width: ($md1+'px')) {
+        font-size: 30px;
+        line-height: 1.1;
+    }
 }
 
 .main-info {
+    order: 3;
     display: flex;
-    flex-wrap: wrap;
     margin-bottom: 15px;
+    grid-area: info;
 
     &__logo {
         width: 150px;
         height: 150px;
         margin-right: 25px;
+    }
+
+    &__descr {
+        max-width: 200px;
     }
 
     &__name {
@@ -47,6 +88,10 @@
 }
 
 .comics {
+    order: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-area: sidebar;
 
     &__title {
         font-family: 'Roboto Condensed';

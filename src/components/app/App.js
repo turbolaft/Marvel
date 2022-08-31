@@ -3,6 +3,8 @@ import Navbar from '../navbar/Navbar.js';
 import {RandomCharacter} from '../randomCharacter/RandomCharacter';
 import MainSection from '../mainSection/MainSection.js';
 
+import ErrorBoundary from '../errorBoundary/ErrorBoundary';
+
 import './app.scss';
 import '../../styles/nullStyles.scss';
 
@@ -13,9 +15,10 @@ function App() {
         <div className='page'>
             <div className="container">
                 <Navbar />
-                <RandomCharacter/>
+                <ErrorBoundary>
+                    <RandomCharacter/>
+                </ErrorBoundary>
                 <MainSection/>
-                <button className="footer__button button">LOAD MORE</button>
             </div>
             <div className="footer__img">
                 <img src={vizen} alt="" className="img" />

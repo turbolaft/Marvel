@@ -1,6 +1,9 @@
 import { Component } from 'react';
+import Skeleton from 'react-loading-skeleton';
+
 import wait from '../../img/animations/1484.gif';
 import error from '../../img/animations/400.jfif';
+import MyLoader from '../skeleton/SmallSkeleton';
 
 import shield from '../../img/shield.png';
 import mjolnir from '../../img/mjolnir.png'
@@ -17,7 +20,6 @@ class RandomCharacter extends Component {
     marvelService = new MarvelServices();
 
     onCharLoaded = char => {
-        console.log(char);
         this.setState({char, loading: false});
     }
 
@@ -44,7 +46,7 @@ class RandomCharacter extends Component {
 
     render() {
         const {char, loading, error} = this.state,
-            loadingMessage = loading ? <Waiting/> : null,
+            loadingMessage = loading ? <MyLoader/> : null,
             errorMessage = error ? <Error/> : null,
             getResult = !loading && !error ? <View char={char}/> : null;
 
@@ -82,6 +84,7 @@ class RandomCharacter extends Component {
 
 const View = ({char}) => {
     let imgClass = "img";
+    const descr = char.description ? char.description.slice(0, 150) + '...' : "We haven't got description on this character";
 
     if (char.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
         imgClass += " contain";
@@ -95,7 +98,7 @@ const View = ({char}) => {
             <div className="random__char-content content-char">
                 <div className="content-char__name">{char.name}</div>
                 <div className="content-char__descr">
-                    {char.description || "We haven't got description on this character"}
+                    {descr}
                 </div>
                 <div className="content-char__buttons">
                     <a href={char.homepage} className="content-char__button button">HOMEPAGE</a>
@@ -117,7 +120,8 @@ const Waiting = () => {
 const Error = () => {
     return (
         <div className="message__wrapper-error">
-            <img src={error} alt="loading" className="img" />
+            <h1>400</h1>
+            <h2>Bad request</h2>
         </div>
     )
 }

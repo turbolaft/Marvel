@@ -1,6 +1,8 @@
 class MarvelServices {
     _apiBase = 'https://gateway.marvel.com:443/v1/public/characters';
     _apiKey = 'apikey=def821eaf4ef3d42fab310c285f8e702';
+    _baseOffset = 210;
+    _limit = 9;
 
     getData = async url => {
         const request = await fetch(url);
@@ -12,9 +14,9 @@ class MarvelServices {
         return await request.json();
     }
 
-    getAllCharacters = async () => {
-        const res = await this.getData(`${this._apiBase}?limit=9&offset=210&${this._apiKey}`);
-        return res.data.results.map(this._transformSimplifiedCharacters);
+    getAllCharacters = async (offset = this._baseOffset) => {
+        const res = await this.getData(`${this._apiBase}?limit=${this._limit}&offset=${offset}&${this._apiKey}`);
+        return res.data.results.map(this._transformCharacter);
     }
 
     getCertainCharacter = async id => {
@@ -29,13 +31,8 @@ class MarvelServices {
             thumbnail: res.thumbnail.path + '.' + res.thumbnail.extension,
             homepage: res.urls[0].url,
             wikiPage: res.urls[1].url,
-        }
-    }
-
-    _transformSimplifiedCharacters = res => {
-        return {
-            name: res.name,
-            thumbnail: res.thumbnail.path + '.' + res.thumbnail.extension,
+            id: res.id,
+            comics: res.comics.items.length == 0 ? ["this character doesn't have any comics"] : res.comics.items.slice(0, 11),
         }
     }
 }

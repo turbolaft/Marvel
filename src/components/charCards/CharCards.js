@@ -88,34 +88,42 @@ class CharCards extends Component {
         });
         this.myRefsArr = [];
 
-        if (document.documentElement.clientWidth <= 1282) {
-            this.interval = setInterval(this.increaseCurrentXCoordinate, 10);
+        if (document.documentElement.clientWidth < 1282) {
+            this.start = performance.now();
+
+            requestAnimationFrame(this.increaseCurrentXCoordinate);
         }
     }
 
-    coordinatesToLow = {
-        scrollTop: 0,
+    animationSetUp = {
+        duration: 1000,
+        timing: timeFraction => {
+            return Math.pow(timeFraction, 2);
+        },
+        draw: time => {
+            const finishStop = Math.round(document.querySelector('.random').getBoundingClientRect().bottom),
+                scrollTop = document.documentElement.scrollTop;
+
+            if (time === 1) {
+                window.scrollTo(0, time * (scrollTop + finishStop));
+            } else {
+                window.scrollTo(0, scrollTop - time * (scrollTop - (scrollTop + finishStop)));
+            }
+        }
     }
 
-    increaseCurrentXCoordinate = () => {
-        const finalStop = +String(document.querySelector('.random').getBoundingClientRect().bottom).split('.')[0];
+    increaseCurrentXCoordinate = time => {
+        const {duration, timing, draw} = this.animationSetUp;
 
-        // console.log(finalStop);
-        
-        if (finalStop === 0) {
-            clearInterval(this.interval);
-            this.coordinatesToLow.scrollTop = 0;
-        } else if (finalStop < 0) {
-            document.documentElement.scrollTop = +String(window.pageYOffset).split('.')[0] - 1;
-        } else if (finalStop > 0) {
-            // window.scrollTo(0, 1000);
-            if (this.coordinatesToLow.scrollTop === 0) {
-                this.coordinatesToLow.scrollTop = +String(document.documentElement.scrollTop).split('.')[0] + 1;
-            } else {
-                this.coordinatesToLow.scrollTop++;
-            }
-            console.log(this.coordinatesToLow.scrollTop);
-            document.documentElement.scrollTop = this.coordinatesToLow.scrollTop;
+        let timeFraction = (time - this.start) / duration;
+        if (timeFraction > 1) timeFraction = 1;
+
+        let progress = timing(timeFraction);
+
+        draw(progress);
+
+        if (timeFraction < 1 && Math.round(document.querySelector('.random').getBoundingClientRect().bottom) != 0) {
+            requestAnimationFrame(this.increaseCurrentXCoordinate);
         }
     }
 
